@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<link rel="icon" href="https://raw.githubusercontent.com/llnmmntbln/Midterm/main/icon.png"
+    type="image/x-icon">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <title>Nezuko Run</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    * {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+    }
+
+
+    .container {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        background-image: url(https://raw.githubusercontent.com/llnmmntbln/Midterm/main/clouds.png),
+            url(https://raw.githubusercontent.com/llnmmntbln/Midterm/main/trees.png),
+            url(https://raw.githubusercontent.com/llnmmntbln/Midterm/main/mountain.png),
+            url(https://raw.githubusercontent.com/llnmmntbln/Midterm/main/floor.png),
+            url(https://raw.githubusercontent.com/llnmmntbln/Midterm/main/stars.jpg);
+        background-size: 100vw 100%;
+        background-position: 0px 0px;
+        animation: goLeft 30s linear infinite;
+    }
+
+    @keyframes goLeft {
+        100% {
+            background-position:
+                200vw 0px,
+                500vw 0px,
+                100vw 0px,
+                800vw 0px,
+                100vw 0px;
+        }
+    }
+
+    .nezuko {
+        position: absolute;
+        height: 20%;
+        left: 65%;
+        bottom: 23%;
+        transform: translateX(-50%);
+    }
+
+    @media (max-width:760px) {
+        .container {
+            height: 320px;
+        }
+    }
+
+    .name {
+        position: absolute;
+        height: 30px;
+        left: 15%;
+        bottom: 3%;
+        transform: translateX(-50%);
+        filter: grayscale(10%);
+    }
+    .section{
+        position: absolute;
+        height: 35px;
+        left: 84%;
+        bottom: 3%;
+        transform: translateX(-50%);
+        filter: grayscale(10%);
+    }
+</style>
+
+<body>
+
+    <div class="container">
+        <img src="https://raw.githubusercontent.com/llnmmntbln/Midterm/main/demon-slayer-running-nezuko-pixel-doodle.gif"
+            class="nezuko">
+    </div>
+    <div class="id">
+        <img src="https://raw.githubusercontent.com/llnmmntbln/Midterm/main/name.png" class="name">
+        <img src="https://raw.githubusercontent.com/llnmmntbln/Midterm/main/section.png" class="section">
+    </div>
+
+</body>
+
+
+</html>
