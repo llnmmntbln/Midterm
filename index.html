@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="icon" href="https://raw.githubusercontent.com/llnmmntbln/Midterm/main/icon.png" type="image/x-icon">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <title>Nezuko Run</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+    }
+
+
+
+    .container {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        background-image: url(https://raw.githubusercontent.com/llnmmntbln/Midterm/main/clouds.png),
+            url(https://raw.githubusercontent.com/llnmmntbln/Midterm/main/trees.png),
+            url(https://raw.githubusercontent.com/llnmmntbln/Midterm/main/mountain.png),
+            url(https://raw.githubusercontent.com/llnmmntbln/Midterm/main/floor.png),
+            url(https://raw.githubusercontent.com/llnmmntbln/Midterm/main/stars.jpg);
+        background-size: 100vw 100%;
+        animation: goLeft 30s linear infinite;
+    }
+
+    @keyframes goLeft {
+        100% {
+            background-position:
+                300vw 0px,
+                600vw 0px,
+                100vw 0px,
+                900vw 0px,
+                200vw 0px;
+        }
+    }
+
+    .name {
+        position: absolute;
+        height: 30px;
+        left: 15%;
+        bottom: 3%;
+        transform: translateX(-50%);
+        filter: grayscale(10%);
+    }
+
+    .section {
+        position: absolute;
+        height: 35px;
+        left: 84%;
+        bottom: 3%;
+        transform: translateX(-50%);
+        filter: grayscale(10%);
+        filter: invert(0);
+    }
+
+    @media (max-width:1680px) {
+        .name {
+            height: 15px;
+        }
+
+        .section {
+            height: 20px;
+
+        }
+
+    }
+
+    @media (max-width:780px) {
+        .container {
+            height: 320px;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .name {
+            bottom: 62%;
+            height: 10px;
+        }
+
+        .section {
+            bottom: 62%;
+            height: 15px;
+
+        }
+    }
+
+    #nezuko-run {
+        position: absolute;
+        height: 20%;
+        left: 85%;
+        bottom: 23%;
+
+    }
+</style>
+
+<body>
+
+    <section>
+        <div class="container">
+            <img src="https://raw.githubusercontent.com/llnmmntbln/Midterm/main/demon-slayer-running-nezuko-pixel-doodle.gif"
+                class="nezuko" id="nezuko-run">
+        </div>
+        <div class="id">
+            <img src="https://r72.cooltext.com/rendered/cooltext452547063604168.png" class="name">
+            <img src="https://r73.cooltext.com/rendered/cooltext452547049040061.png" class="section">
+        </div>
+
+    </section>
+
+    <script>
+        const runningNezuko = document.getElementById('nezuko-run');
+        const steps = 4;
+        const jumpHeight = -200; 
+        const jumpDuration = 500; 
+
+        let moveForward = false;
+        let moveBackward = false;
+        let isJumping = false;
+        let runId = null;
+        let originalTop = parseInt(getComputedStyle(runningNezuko).top);
+        let currentTop = originalTop;
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'ArrowLeft') {
+                startMovingForward();
+            } else if (event.key === 'ArrowRight') {
+                startMovingBackward();
+            } else if (event.key === 'ArrowUp' && !isJumping) {
+                jump();
+            }
+        });
+
+        document.addEventListener('keyup', function (event) {
+            if (event.key === 'ArrowLeft') {
+                stopMovingForward();
+            } else if (event.key === 'ArrowRight') {
+                stopMovingBackward();
+            }
+        });
+
+        function startMovingForward() {
+            if (!moveForward) {
+                moveForward = true;
+                moveLeft();
+            }
+        }
+
+        function stopMovingForward() {
+            moveForward = false;
+        }
+
+        function moveLeft() {
+            const currentPosition = parseInt(runningNezuko.style.left) || 1620;
+            const newPosition = currentPosition - steps;
+            runningNezuko.style.left = `${newPosition}px`;
+
+            if (moveForward && newPosition >= 0) {
+                requestAnimationFrame(moveLeft);
+            }
+        }
+
+        function startMovingBackward() {
+            if (!moveBackward) {
+                moveBackward = true;
+                moveRight();
+            }
+        }
+
+        function stopMovingBackward() {
+            moveBackward = false;
+        }
+
+        function moveRight() {
+            const currentPosition = parseInt(runningNezuko.style.left) || 0;
+            const newPosition = currentPosition + steps;
+            const maxPosition = 1630;
+
+            if (moveBackward && newPosition <= maxPosition) {
+                runningNezuko.style.left = `${newPosition}px`;
+                requestAnimationFrame(moveRight);
+            }
+        }
+
+        function jump() {
+            isJumping = true;
+            const startTime = performance.now();
+            const initialTop = parseInt(getComputedStyle(runningNezuko).top);
+
+            function animateJump(currentTime) {
+                const elapsedTime = currentTime - startTime;
+                const progress = Math.min(elapsedTime / jumpDuration, 1);
+                const newTop = initialTop + jumpHeight * Math.sin(progress * Math.PI);
+                runningNezuko.style.top = `${newTop}px`;
+
+                if (progress < 1) {
+                    requestAnimationFrame(animateJump);
+                } else {
+                    requestAnimationFrame(animateLand);
+                }
+            }
+
+            function animateLand(currentTime) {
+                const elapsedTime = currentTime - startTime;
+                const progress = Math.min(elapsedTime / jumpDuration, 1);
+                const newTop = initialTop + jumpHeight * Math.sin((1 - progress) * Math.PI);
+                runningNezuko.style.top = `${newTop}px`;
+
+                if (progress < 1) {
+                    requestAnimationFrame(animateLand);
+                } else {
+                    isJumping = false;
+                    runningNezuko.style.top = `${originalTop}px`;
+                }
+            }
+
+            requestAnimationFrame(animateJump);
+        }
+
+
+    </script>
+</body>
+
+</html>
