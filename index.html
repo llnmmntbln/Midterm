@@ -107,6 +107,18 @@
         bottom: 23%;
 
     }
+
+    .obstacle {
+        position: absolute;
+        bottom: 23.5%;
+        left: 50%;
+        width: 30px;
+        height: 30px;
+        background-image: url('https://i.gifer.com/origin/18/1881d8691bd9ff18bea62c0a275e1da6_w200.gif');
+        background-size: cover;
+        background-position: center;
+    }
+
 </style>
 
 <body>
@@ -119,6 +131,7 @@
         <div class="id">
             <img src="https://raw.githubusercontent.com/llnmmntbln/Midterm/main/1.png" class="name">
             <img src="https://raw.githubusercontent.com/llnmmntbln/Midterm/main/2.png" class="section">
+            <div class="obstacle" id="obstacle"></div>
         </div>
 
     </section>
@@ -126,8 +139,8 @@
     <script>
         const runningNezuko = document.getElementById('nezuko-run');
         const steps = 4;
-        const jumpHeight = -200; 
-        const jumpDuration = 500; 
+        const jumpHeight = -200;
+        const jumpDuration = 500;
 
         let moveForward = false;
         let moveBackward = false;
@@ -232,6 +245,36 @@
             requestAnimationFrame(animateJump);
         }
 
+        function checkCollision() {
+            const nezukoRect = runningNezuko.getBoundingClientRect();
+            const obstacleRect = obstacle.getBoundingClientRect();
+
+            // Check if the bounding rectangles of Nezuko and the obstacle overlap
+            if (
+                nezukoRect.left < obstacleRect.right &&
+                nezukoRect.right > obstacleRect.left &&
+                nezukoRect.top < obstacleRect.bottom &&
+                nezukoRect.bottom > obstacleRect.top
+            ) {
+                // Display Game Over message
+                const gameOverMessage = document.createElement('div');
+                gameOverMessage.textContent = "Game Over";
+                gameOverMessage.style.position = "absolute";
+                gameOverMessage.style.top = "50%";
+                gameOverMessage.style.left = "50%";
+                gameOverMessage.style.transform = "translate(-50%, -50%)";
+                gameOverMessage.style.fontSize = "36px";
+                gameOverMessage.style.color = "red";
+                gameOverMessage.style.zIndex = "9999";
+                document.body.appendChild(gameOverMessage);
+
+                setTimeout(function () {
+                    location.reload();
+                }, 1500);
+            }
+        }
+        setInterval(checkCollision, 50);
+    </script>
 
     </script>
 </body>
